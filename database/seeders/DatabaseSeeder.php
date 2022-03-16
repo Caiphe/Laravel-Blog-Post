@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         User::truncate();
-        // Category::truncate();
+        Category::truncate();
         Post::truncate();
 
         // $user = User::factory()->create([
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Post::factory(30)->create();
-        // Category::factory(10)->create();
+        Category::factory(10)->create();
 
         // $personal = Category::create([
         //     'name' => 'Personal',
