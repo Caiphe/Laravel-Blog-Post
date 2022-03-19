@@ -21,7 +21,7 @@ use App\Http\Controllers\RegistrationController;
 */
 
 Route::get('/', [PostController::class, 'index'])->name('home');
-Route::get('/post/{post:slug}', [PostController::class, 'show']);
+Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('show.post');
 
 Route::get('/register',[RegistrationController::class, 'create'])->name('user.register');
 Route::post('/register',[RegistrationController::class, 'store'])->name('register.create');
@@ -37,4 +37,7 @@ Route::post('/newsletter', NewsletterController::class);
 Route::get('/admin/posts/create', [PostController::class, 'create'])->middleware('admin')->name('create-post');
 Route::post('/admin/posts/', [PostController::class, 'store'])->middleware('admin')->name('store.post');
 Route::get('/admin/posts', [AdminPostController::class, 'index'])->middleware('admin')->name('admin.post');
+Route::get('/admin/posts/{post:slug}/edit', [AdminPostController::class, 'edit'])->middleware('admin')->name('admin.post.edit');
+Route::patch('/admin/posts/{post:id}', [AdminPostController::class, 'update'])->middleware('admin')->name('admin.post.update');
+Route::delete('/admin/posts/delete/{post:id}', [AdminPostController::class, 'destroy'])->middleware('admin')->name('admin.post.delete');
 

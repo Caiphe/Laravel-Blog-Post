@@ -33,6 +33,7 @@
                     </form>
                     @if(auth()->user()->username === 'disilunga')
                         <a class="ml-4" href="{{ route('create-post') }}">New Post</a>
+                        <a class="ml-4" href="{{ route('create-post') }}">Dashboardt</a>
                     @endif
 
 

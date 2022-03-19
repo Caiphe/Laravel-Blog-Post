@@ -29,7 +29,7 @@ class PostRequest extends FormRequest
             'user_id' => ['nullable'],
             'title'=>'required|min:3',
             'excerpt' => 'required',
-            'slug' => 'nullable', Rule::unique('posts', 'slug'),
+            'slug' => 'nullable',
             'body' =>'required',
             'thumbnail' => 'required|image'
         ];
