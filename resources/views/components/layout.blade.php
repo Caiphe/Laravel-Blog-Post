@@ -31,12 +31,16 @@
                         @csrf
                         <button type="sbmit">Logout</button>
                     </form>
+                    @if(auth()->user()->username === 'disilunga')
+                        <a class="ml-4" href="{{ route('create-post') }}">New Post</a>
+                    @endif
+
 
                 @endguest
 
                 <a href="#newsletter"
                     class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
-                    Subscribe for Updates
+                    Subscribe
                 </a>
             </div>
         </nav>

@@ -5,7 +5,10 @@ use MailchimpMarketing\ApiClient;
 
 class Newsletter
 {
-    public function subscribe(string $email){
+    public function subscribe(string $email, string $list = null)
+    {
+        $list ??= config('services.mailchimp.lists.subscribers');
+
         $mailchimp = new ApiClient();
 
         $mailchimp->setConfig([
@@ -13,10 +16,9 @@ class Newsletter
             'server' => 'us14'
         ]);
 
-        return  $mailchimp->lists->addListMember('2c291e54e5', [
+        return  $mailchimp->lists->addListMember('services.mailchimp.lists.subscribers', [
             'email_address' => $email,
             'status' => 'subscribed',
         ]);
-
     }
 }

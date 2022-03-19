@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,6 +21,7 @@ class Post extends Model
         'excerpt',
         'slug',
         'body',
+        'thumbnail'
     ];
 
     // Default Eager loading
@@ -48,6 +50,12 @@ class Post extends Model
             $query->whereHas('author', fn($query) =>
                 $query->where('username', $author))
         );
+    }
+
+    // Mutator to creator automatically the slug from the title
+    public function setTitleAttribute($title){
+        $this->attributes['title'] = $title;
+        $this->attributes['slug'] = Str::slug($title);
     }
 
     public function category(){

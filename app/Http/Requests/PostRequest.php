@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
@@ -13,7 +14,7 @@ class PostRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,12 +25,13 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id'=>'required',
-            'user_id' => 'required',
+            'category_id'=> ['required', Rule::exists('categories', 'id')],
+            'user_id' => ['nullable'],
             'title'=>'required|min:3',
-            'excerpt' => 'nullable',
-            'slug' => 'required',
+            'excerpt' => 'required',
+            'slug' => 'nullable', Rule::unique('posts', 'slug'),
             'body' =>'required',
+            'thumbnail' => 'required|image'
         ];
     }
 
@@ -41,6 +43,7 @@ class PostRequest extends FormRequest
             'excerpt' => htmlspecialchars($this->excerpt),
             'slug' => htmlspecialchars($this->slug),
             'body' => htmlspecialchars($this->body),
+            'thumbnail' => htmlspecialchars($this->thumbnail),
         ]);
     }
 }

@@ -4,6 +4,8 @@ use App\Services\Newsletter;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\RegistrationController;
 
@@ -20,29 +22,19 @@ use App\Http\Controllers\RegistrationController;
 
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/post/{post:slug}', [PostController::class, 'show']);
+
 Route::get('/register',[RegistrationController::class, 'create'])->name('user.register');
 Route::post('/register',[RegistrationController::class, 'store'])->name('register.create');
+
 Route::post('/logout',[SessionController::class, 'destroy'])->name('user.logout')->middleware('auth');
 Route::get('/login',[SessionController::class, 'create'])->name('user.login')->middleware('guest');
 Route::post('/login',[SessionController::class, 'store'])->name('user.login-action')->middleware('guest');
+
 Route::post('/posts/{post:slug}/comments', [PostCommentsController::class, 'store']);
 
-Route::post('/newsletter', function(Newsletter $newsletter){
-    request()->validate([
-        'email' => 'required|email',
-    ]);
+Route::post('/newsletter', NewsletterController::class);
 
-    try{
-    //   $newsletter = new Newsletter();
-    //   $newsletter->subscribe(request('email'));
-    (new Newsletter())->subscribe(request('email'));
+Route::get('/admin/posts/create', [PostController::class, 'create'])->middleware('admin')->name('create-post');
+Route::post('/admin/posts/', [PostController::class, 'store'])->middleware('admin')->name('store.post');
+Route::get('/admin/posts', [AdminPostController::class, 'index'])->middleware('admin')->name('admin.post');
 
-    }catch(\Exception $e){
-       throw \Illuminate\Validation\ValidationException::withMessages([
-            'email' => 'This email could noe be added to our newsletter.'
-        ]);
-    }
-
-    return redirect('/')->with('success', 'You are now signed up for our newsletter');
-
-});
